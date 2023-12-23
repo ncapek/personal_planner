@@ -83,6 +83,7 @@ class FitnessAPI:
             dict: A dictionary containing formatted fitness data. Returns an empty dict if fetching fails or data is incomplete.
         """
         raw_data = self.fetch_health_data(params)
+        print(raw_data)
         if not raw_data:
             return {}
 
