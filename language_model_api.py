@@ -48,7 +48,7 @@ class OpenAIGPTAPI(LanguageModelAPI):
         messages = [{"role": "user", "content": prompt}]
         chat_completion = self.client.chat.completions.create(
             messages=messages,
-            model="gpt-3.5-turbo"
+            model=self.model
         )
         return chat_completion
 
