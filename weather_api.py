@@ -21,7 +21,7 @@ import requests
 from datetime import datetime
 import pytz
 import logging
-from config import OPENWEATHER_API_KEY, LATITUDE, LONGITUDE, TIMEZONE
+from personal_planner.config import OPENWEATHER_API_KEY, LATITUDE, LONGITUDE, TIMEZONE
 from requests.exceptions import HTTPError, ConnectionError, Timeout, RequestException
 
 logging.basicConfig(level=logging.INFO)
@@ -112,9 +112,8 @@ class WeatherAPI:
             str: A human-readable date and time string. Returns 'Invalid time' if an error occurs.
         """
         try:
-            date_time_utc = datetime.utcfromtimestamp(unix_timestamp)
             timezone = pytz.timezone(timezone_str)
-            date_time_local = date_time_utc.replace(tzinfo=pytz.utc).astimezone(timezone)
+            date_time_local = datetime.fromtimestamp(unix_timestamp, timezone)
             return date_time_local.strftime("%Y-%m-%d %H:%M:%S %Z")
         except Exception as e:
             logger.error(f"Error converting timestamp: {e}")

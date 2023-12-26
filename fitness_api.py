@@ -17,7 +17,7 @@ Note:
 
 import requests
 import logging
-from config import NOCODE_API_LINK
+from personal_planner.config import NOCODE_API_LINK
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -83,7 +83,6 @@ class FitnessAPI:
             dict: A dictionary containing formatted fitness data. Returns an empty dict if fetching fails or data is incomplete.
         """
         raw_data = self.fetch_health_data(params)
-        print(raw_data)
         if not raw_data:
             return {}
 
