@@ -25,6 +25,9 @@ Given the weather conditions and the flood alert, it might be a good idea to pla
 Remember to stay aware of any updates regarding the weather and flood alert throughout the day. Stay motivated, take breaks, and make sure your schedule aligns with your long-term goals. Have a productive and successful day!
 ```
 
+Sample from output email:
+![Sample Briefing](assets/sample_briefing.jpg)
+
 # Getting Started
 ## Prerequisites
 Access to APIs (OpenWeather, Google Fit accessed via NoCode, Motion Planner, OpenAI GPT).
