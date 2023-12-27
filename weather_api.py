@@ -21,7 +21,7 @@ import requests
 from datetime import datetime
 import pytz
 import logging
-from personal_planner.config import OPENWEATHER_API_KEY, LATITUDE, LONGITUDE, TIMEZONE
+from config import OPENWEATHER_API_KEY, LATITUDE, LONGITUDE, TIMEZONE
 from requests.exceptions import HTTPError, ConnectionError, Timeout, RequestException
 
 logging.basicConfig(level=logging.INFO)

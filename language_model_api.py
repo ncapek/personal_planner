@@ -92,8 +92,8 @@ if __name__ == "__main__":
     combined_api = CombinedAPI(weather_api, fitness_api, motion_api)
     # Gather personal data
     data = combined_api.get_combined_data(LATITUDE, LONGITUDE, TIMEZONE)
-
+    # Construct template
     template = f"Construct a briefing for my day, based on the following data\n\npersonal_data: {data}"
-    print(template)
+    # Gather response
     response = openai_api.query(template)
     print(response.choices[0].message.content)

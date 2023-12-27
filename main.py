@@ -32,14 +32,14 @@ from sendgrid_api import send_email
 from langchain.prompts import PromptTemplate
 from config import (OPENWEATHER_API_KEY, NOCODE_API_LINK, MOTION_API_KEY,
                     OPENAI_API_KEY, FROM_EMAIL, TO_EMAIL, SUBJECT,
-                    LATITUDE, LONGITUDE, TIMEZONE, COMMAND, CONTEXT)
+                    LATITUDE, LONGITUDE, TIMEZONE, COMMAND, CONTEXT, OUTPUT_STRUCTURE)
 import logging
 
 # Configure logging for better debugging and tracking
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def create_prompt(command: str, context: str, personal_data: str) -> str:
+def create_prompt(command: str, context: str, personal_data: str, output_structure: str) -> str:
     """
     Generates a prompt for the language model using provided command, context, and personal data.
 
@@ -47,14 +47,15 @@ def create_prompt(command: str, context: str, personal_data: str) -> str:
         command (str): The command or question for the language model.
         context (str): Contextual information about the user.
         personal_data (str): Personal data to be included in the prompt.
+        outout_structure (str): Format of the desired output structure.
 
     Returns:
         str: A formatted prompt for the language model.
     """
     prompt_template = PromptTemplate.from_template(
-        "{command}\n\nContext: <{context}>\n\nPersonal data: <{personal_data}>"
+        "{command}\n\nContext: <{context}>\n\nPersonal data: <{personal_data}>\n\nDesired output structure: <{output_structure}>"
     )
-    return prompt_template.format(command=command, context=context, personal_data=personal_data)
+    return prompt_template.format(command=command, context=context, personal_data=personal_data, output_structure=output_structure)
 
 def gather_data() -> dict:
     """
@@ -97,11 +98,14 @@ def main():
     getting a response from the language model, and sending an email.
     """
     try:
-        data = gather_data()
-        prompt = create_prompt(COMMAND, CONTEXT, data)
+        # data = gather_data()
+        from test_response import test_response
+        data = test_response
+        prompt = create_prompt(COMMAND, CONTEXT, data, OUTPUT_STRUCTURE)
         response = get_language_model_response(prompt)
         response = response + f'\n\n\n\ndata: {data}'
-        send_email(from_email=FROM_EMAIL, to_email=TO_EMAIL, subject=SUBJECT, html_content=response)
+        print(response)
+        # send_email(from_email=FROM_EMAIL, to_email=TO_EMAIL, subject=SUBJECT, html_content=response)
         logger.info("Morning briefing successfully sent by email.")
     except Exception as e:
         logger.error("An error occurred in the main workflow: %s", e)

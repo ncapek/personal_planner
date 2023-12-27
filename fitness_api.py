@@ -17,7 +17,7 @@ Note:
 
 import requests
 import logging
-from personal_planner.config import NOCODE_API_LINK
+from config import NOCODE_API_LINK
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
