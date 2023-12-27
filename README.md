@@ -8,6 +8,7 @@ The Personal Planner project integrates various personal data sources such as pl
 - Task Management: Keeps track of your planner tasks and deadlines. (usemotion.com api)
 - Personalized Reports: Generates tailored daily briefings using an LLM. (openai api)
 - Email outputs: The briefings are scheduled by a cronjob to be generated every day and the output is sent via email
+
 Sample Output
 ![Sample Briefing](assets/sample_briefing.png)
 
