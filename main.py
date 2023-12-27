@@ -100,6 +100,7 @@ def main():
         data = gather_data()
         prompt = create_prompt(COMMAND, CONTEXT, data)
         response = get_language_model_response(prompt)
+        response = response + f'\n\n\n\ndata: {data}'
         send_email(from_email=FROM_EMAIL, to_email=TO_EMAIL, subject=SUBJECT, html_content=response)
         logger.info("Morning briefing successfully sent by email.")
     except Exception as e:
