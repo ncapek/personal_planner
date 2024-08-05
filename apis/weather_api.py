@@ -5,27 +5,18 @@ This module provides access to weather data via the OpenWeatherMap One Call API.
 which offers methods to fetch detailed weather data for a specific latitude and longitude. Features include fetching
 raw weather data, extracting and formatting relevant data points for easier consumption, and utility functions for
 time conversion. The module is designed to be easy to use while providing robust error handling and logging capabilities.
-
-Classes:
-    WeatherAPI: A class to interact with and process data from the OpenWeatherMap API.
-
-Example:
-    weather_api = WeatherAPI(api_key)
-    weather_data = weather_api.get_clean_weather_data(latitude, longitude, timezone)
-
-Note:
-    An API key from OpenWeatherMap is required to use this module.
 """
 
 import requests
 from datetime import datetime
-import pytz
 import logging
-from config import OPENWEATHER_API_KEY, LATITUDE, LONGITUDE, TIMEZONE
+from config import CONFIG
+from credentials_manager import CredentialsManager
 from requests.exceptions import HTTPError, ConnectionError, Timeout, RequestException
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class WeatherAPI:
     """
@@ -100,21 +91,19 @@ class WeatherAPI:
         return self.extract_relevant_data(raw_data, timezone_str)
 
     @staticmethod
-    def convert_unix_to_readable(unix_timestamp: int, timezone_str: str) -> str:
+    def convert_unix_to_readable(unix_timestamp: int, timezone) -> str:
         """
         Converts a UNIX timestamp to a human-readable date and time string in the specified timezone.
 
         Args:
             unix_timestamp (int): The UNIX timestamp to convert.
-            timezone_str (str): The timezone string for the conversion.
+            timezone: The timezone for the conversion.
 
         Returns:
             str: A human-readable date and time string. Returns 'Invalid time' if an error occurs.
         """
         try:
-            date_time_utc = datetime.utcfromtimestamp(unix_timestamp)
-            timezone = pytz.timezone(timezone_str)
-            date_time_local = date_time_utc.replace(tzinfo=pytz.utc).astimezone(timezone)
+            date_time_local = datetime.fromtimestamp(unix_timestamp, timezone)
             return date_time_local.strftime("%Y-%m-%d %H:%M:%S %Z")
         except Exception as e:
             logger.error(f"Error converting timestamp: {e}")
@@ -208,6 +197,7 @@ class WeatherAPI:
 
 
 if __name__ == '__main__':
-    weather_api = WeatherAPI(OPENWEATHER_API_KEY)
-    weather_info = weather_api.get_clean_weather_data(LATITUDE, LONGITUDE, TIMEZONE)
+    credentials_manager = CredentialsManager()
+    weather_api = WeatherAPI(credentials_manager.get_credential("OPENWEATHER_API_KEY"))
+    weather_info = weather_api.get_clean_weather_data(CONFIG["LATITUDE"], CONFIG["LONGITUDE"], CONFIG["TIMEZONE"])
     print(weather_info)
