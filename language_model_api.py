@@ -75,5 +75,13 @@ if __name__ == "__main__":
     prompt = 'Please help me construct a personalized morning briefing on my day. Use the following context and personal data to do so. My personal data includes todays data from my fitness tracker, planned tasks from my calendar, and information about todays forecast. Help contextualize things for me, understand how my health might impact my day, and tell me if my days alligns with my longterm goals.'
     context = 'I am a programmer living in Prague striving for career development while not neglecting other critical areas in life.'
     profile_data = test_response
+    import logging
+    from weather_api import WeatherAPI
+    from fitness_api import FitnessAPI
+    from motion_api import MotionAPI
+    from config import *
+    motion_api = MotionAPI(MOTION_API_KEY)
+    clean_task_data = motion_api.get_clean_task_data()
+    profile_data = clean_task_data
     response = openai_api.query(prompt, context, profile_data)
     print(response.choices[0].message.content)
